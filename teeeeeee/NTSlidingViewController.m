@@ -6,14 +6,15 @@
 //  Copyright (c) 2014年 xiaoran. All rights reserved.
 
 #import "NTSlidingViewController.h"
-#define kNavigationBarViewH 44
-#define kButtonMinW 70
+#define kNavigationBarViewH 44 //顶部高度
+#define kButtonMinW 70         //顶部按钮最小宽度
+#define kShadowLineW 50        //线条宽度
 #define kSelecetedColor ([UIColor colorWithRed:70.0/255.0 green:128.0/255.0 blue:209.0/255.0 alpha:1])
 @interface NTSlidingViewController ()<UIScrollViewDelegate>
 {
     CGFloat _viewWidth;
+    CGFloat _buttonWidth;//顶部按钮实际宽度
 }
-@property (nonatomic,strong) NSMutableArray *buttonSizeArray;//所有按钮的宽度
 @property (nonatomic,strong) UIView *shadowLine;
 @property (nonatomic,strong) UIScrollView *contentScrollview;
 @property (nonatomic,assign) CGFloat allButtonWidth;
@@ -106,6 +107,7 @@
         if (buttonWidth < kButtonMinW) {
             buttonWidth = kButtonMinW;
         }
+        _buttonWidth = buttonWidth;
         self.allButtonWidth = buttonWidth * itemCount;
         _navigationBarScrollView.showsHorizontalScrollIndicator = NO;
         _navigationBarScrollView.contentSize = CGSizeMake(self.allButtonWidth, kNavigationBarViewH);
@@ -126,7 +128,7 @@
                 [button setTitleColor:self.selectedLabelColor forState:UIControlStateNormal];
             }
         }
-        self.shadowLine = [[UIView alloc] initWithFrame:CGRectMake(0, kNavigationBarViewH - 3, buttonWidth, 3)];
+        self.shadowLine = [[UIView alloc] initWithFrame:CGRectMake((_buttonWidth - kShadowLineW)*0.5, kNavigationBarViewH - 3, kShadowLineW, 3)];
         self.shadowLine.backgroundColor = kSelecetedColor;
         [_navigationBarScrollView addSubview:self.shadowLine];
     }
@@ -256,7 +258,7 @@
 
     CGFloat ratio = self.navigationBarScrollView.contentSize.width/scrollView.contentSize.width;
     CGRect shadowRect = self.shadowLine.frame;
-    shadowRect.origin.x = contentOffsetX*ratio;
+    shadowRect.origin.x = contentOffsetX*ratio  + (_buttonWidth - kShadowLineW)*0.5;
     self.shadowLine.frame = shadowRect;
 }
 @end
