@@ -6,9 +6,12 @@
 //  Copyright (c) 2014年 huangzhenyu. All rights reserved.
 
 #import "HZSlidingViewController.h"
-#define kNavigationBarViewH 44 //顶部高度
+
+#define kTopEdge 0 //顶部间隙 （如果需要自定义导航条，这个值应该设置为你自定义导航条的高度 一般是64）
+
+#define kNavigationBarViewH 44 //顶部分类选择条的高度
 #define kButtonMinW 70         //顶部按钮最小宽度
-#define kShadowLineW 50        //线条宽度
+#define kShadowLineW 50        //指示线条的宽度
 #define kSelecetedColor ([UIColor colorWithRed:70.0/255.0 green:128.0/255.0 blue:209.0/255.0 alpha:1])
 @interface HZSlidingViewController ()<UIScrollViewDelegate>
 {
@@ -78,15 +81,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if ([UIApplication sharedApplication].statusBarHidden) {
-        _sysStatusBarH = 0;
-    } else {
-        _sysStatusBarH = 20;
-    }
+
     if (self.navigationController.navigationBar) {
-        _sysNavBarH = self.navigationController.navigationBar.frame.size.height;
-    } else {
+        if (self.navigationController.navigationBar.hidden) {//系统导航条存在但是隐藏了
+            _sysNavBarH = 0;
+            _sysStatusBarH = 0;
+        } else {
+            _sysNavBarH = self.navigationController.navigationBar.frame.size.height;
+            if ([UIApplication sharedApplication].statusBarHidden) {
+                _sysStatusBarH = 0;
+            } else {
+                _sysStatusBarH = [UIApplication sharedApplication].statusBarFrame.size.height;
+            }
+        }
+    } else {//系统导航条不存在
         _sysNavBarH = 0;
+        _sysStatusBarH = 0;
     }
     _viewWidth = self.view.frame.size.width;
     _viewHeight = self.view.frame.size.height;
@@ -98,28 +108,49 @@
     self.selectedIndex = 0;
 }
 
-//- (void)viewDidLayoutSubviews{
-//    [super viewDidLayoutSubviews];
-//    _viewWidth = self.view.frame.size.width;
-//    _viewHeight = self.view.frame.size.height;
-//    if ([UIApplication sharedApplication].statusBarHidden) {
-//        _sysStatusBarH = 0;
-//    } else {
-//        _sysStatusBarH = 20;
-//    }
-//    if (self.navigationController.navigationBar) {
-//        _sysNavBarH = self.navigationController.navigationBar.frame.size.height;
-//    } else {
-//        _sysNavBarH = 0;
-//    }
-//    _navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, _sysNavBarH + _sysStatusBarH, _viewWidth, kNavigationBarViewH)];
-//    _navigationBarScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth , kNavigationBarViewH)];
-//    _contentScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _sysNavBarH+_sysStatusBarH+kNavigationBarViewH,_viewWidth  , _viewHeight-_sysNavBarH-_sysStatusBarH-kNavigationBarViewH )];
-//}
+- (void)viewDidLayoutSubviews{
+    //支持横屏
+    [super viewDidLayoutSubviews];
+    _viewWidth = self.view.frame.size.width;
+    _viewHeight = self.view.frame.size.height;
+    if (self.navigationController.navigationBar) {
+        if (self.navigationController.navigationBar.hidden) {//系统导航条存在但是隐藏了
+            _sysNavBarH = 0;
+            _sysStatusBarH = 0;
+        } else {
+            _sysNavBarH = self.navigationController.navigationBar.frame.size.height;
+            if ([UIApplication sharedApplication].statusBarHidden) {
+                _sysStatusBarH = 0;
+            } else {
+                _sysStatusBarH = [UIApplication sharedApplication].statusBarFrame.size.height;
+            }
+        }
+    } else {//系统导航条不存在
+        _sysNavBarH = 0;
+        _sysStatusBarH = 0;
+    }
+    NSLog(@"%f --  %f ",_sysNavBarH,_sysStatusBarH);
+    self.navigationBarView.frame = CGRectMake(0, _sysNavBarH + _sysStatusBarH + kTopEdge, _viewWidth, kNavigationBarViewH);
+    self.navigationBarScrollView.frame = CGRectMake(0, 0, _viewWidth , kNavigationBarViewH);
+    self.contentScrollview.frame = CGRectMake(0, _sysNavBarH+_sysStatusBarH+kNavigationBarViewH + kTopEdge,_viewWidth  , _viewHeight-_sysNavBarH-_sysStatusBarH-kNavigationBarViewH - kTopEdge );
+    for (int i=0; i<[self.childControllers count]; i++) {
+        id obj = [self.childControllers objectAtIndex:i];
+        if ([obj isKindOfClass:[UIViewController class]]) {
+            UIViewController *controller = (UIViewController *)obj;
+            CGFloat scrollWidth = _contentScrollview.frame.size.width;
+            CGFloat scrollHeight = _contentScrollview.frame.size.height;
+            [controller.view setFrame:CGRectMake(i*scrollWidth, 0, scrollWidth, scrollHeight)];
+        }
+    }
+    _contentScrollview.contentSize = CGSizeMake(_contentScrollview.frame.size.width*[self.titles count], _contentScrollview.frame.size.height);
+    //设置contentScrollview的偏移量
+    [_contentScrollview setContentOffset:CGPointMake(_selectedIndex *_contentScrollview.frame.size.width, 0) animated:NO];
+
+}
 
 -(UIView *)navigationBarView{
     if (!_navigationBarView) {
-        _navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, _sysNavBarH + _sysStatusBarH, _viewWidth, kNavigationBarViewH)];
+        _navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, _sysNavBarH + _sysStatusBarH + kTopEdge, _viewWidth, kNavigationBarViewH)];
         _navigationBarView.backgroundColor = [UIColor whiteColor];
         [_navigationBarView addSubview:self.navigationBarScrollView];
     }
@@ -167,7 +198,7 @@
 - (UIScrollView *)contentScrollview
 {
     if (!_contentScrollview) {
-        _contentScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _sysNavBarH+_sysStatusBarH+kNavigationBarViewH,_viewWidth  , _viewHeight-_sysNavBarH-_sysStatusBarH-kNavigationBarViewH )];
+        _contentScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _sysNavBarH+_sysStatusBarH+kNavigationBarViewH + kTopEdge,_viewWidth  , _viewHeight-_sysNavBarH-_sysStatusBarH-kNavigationBarViewH - kTopEdge)];
         _contentScrollview.backgroundColor = [UIColor whiteColor];
         _contentScrollview.pagingEnabled = YES;
         _contentScrollview.alwaysBounceHorizontal = YES;
