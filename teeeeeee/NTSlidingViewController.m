@@ -3,7 +3,7 @@
 //  NTSlidingViewController
 //
 //  Created by nonstriater on 14-2-24.
-//  Copyright (c) 2014年 xiaoran. All rights reserved.
+//  Copyright (c) 2014年 huangzhenyu. All rights reserved.
 
 #import "NTSlidingViewController.h"
 #define kNavigationBarViewH 44 //顶部高度
@@ -33,31 +33,31 @@
     }
     return  self;
 }
-- (instancetype)initSlidingViewControllerWithTitlesAndControllers:(NSDictionary *)titlesAndControllers{
-    
-    if (self = [self init]) {
-        
-        [titlesAndControllers enumerateKeysAndObjectsUsingBlock:^(id key,id obj,BOOL *stop){
-            if ([key isKindOfClass:[NSString class]] && [obj isKindOfClass:[UIViewController class]]) {
-                
-                [self.titles addObject:key];
-                [self.childControllers addObject:obj];
-            }
-        }];
-        
-    }
-    return self;
-}
+//- (instancetype)initSlidingViewControllerWithTitlesAndControllers:(NSDictionary *)titlesAndControllers{
+//    
+//    if (self = [self init]) {
+//        
+//        [titlesAndControllers enumerateKeysAndObjectsUsingBlock:^(id key,id obj,BOOL *stop){
+//            if ([key isKindOfClass:[NSString class]] && [obj isKindOfClass:[UIViewController class]]) {
+//                
+//                [self.titles addObject:key];
+//                [self.childControllers addObject:obj];
+//            }
+//        }];
+//        
+//    }
+//    return self;
+//}
 
 - (void)addControllerWithTitle:(NSString *)title viewController:(UIViewController *)controller{
     [self.titles addObject:title];
     [self.childControllers addObject:controller];
 }
 
-#pragma mark - config
--(UIInterfaceOrientation)interfaceOrientation{
-    return UIInterfaceOrientationPortrait;
-}
+//#pragma mark - config
+//-(UIInterfaceOrientation)interfaceOrientation{
+//    return UIInterfaceOrientationPortrait;
+//}
 
 - (NSMutableArray *)titles
 {
@@ -82,11 +82,10 @@
     _viewWidth = self.view.frame.size.width;
     _unselectedLabelColor = [UIColor grayColor];
     _selectedLabelColor = kSelecetedColor;
-    _selectedIndex = 1;//默认是1，可以通过继承设置默认选中的不为1
     self.automaticallyAdjustsScrollViewInsets = NO;//设置scrollview内部的控件不自动下拉64像素
     [self.view addSubview:self.navigationBarView];
     [self.view addSubview:self.contentScrollview];
-    self.selectedIndex = 1;
+    self.selectedIndex = 0;
 }
 
 -(UIView *)navigationBarView{
@@ -120,7 +119,7 @@
             [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
             [button setTitle:self.titles[i] forState:UIControlStateNormal];
             [button setContentEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 5)];
-            button.tag = i+1;
+            button.tag = i;
             [button addTarget:self action:@selector(navigationBarButtonItemClicked:) forControlEvents:UIControlEventTouchUpInside];
             button.frame = CGRectMake(i*buttonWidth, 0, buttonWidth, kNavigationBarViewH);
             [_navigationBarScrollView addSubview:button];
@@ -177,7 +176,7 @@
     //设置点击状态栏tableview滚动到顶部
     for (int i= 0; i<[self.childControllers count]; i++) {
         id obj = [self.childControllers objectAtIndex:i];
-        if (i == index - 1) {//设置当前的控制器，如果是tableview，设置scrollsToTop为YES
+        if (i == index) {//设置当前的控制器，如果是tableview，设置scrollsToTop为YES
             if ([obj isKindOfClass:[UITableViewController class]]) {
                 UITableViewController *vc = (UITableViewController *)obj;
                 vc.tableView.scrollsToTop = YES;
@@ -189,16 +188,26 @@
             }
         }
     }
-    
-    if (index != self.selectedIndex) {
-        UIButton *origin = (UIButton *)[_navigationBarScrollView viewWithTag:self.selectedIndex];
+    //改变按钮颜色
+    if (index != _selectedIndex) {
+        UIButton *origin;
+        UIButton *currentButton;
+        for (id view in _navigationBarScrollView.subviews) {
+            if ([view isKindOfClass:[UIButton class]]) {
+                UIButton *button = (UIButton *)view;
+                if (button.tag == index) {
+                    currentButton = button;
+                }
+                if (button.tag == _selectedIndex) {
+                    origin = button;
+                }
+            }
+        }
         [origin setTitleColor:self.unselectedLabelColor forState:UIControlStateNormal];
-        
-        UIButton *currentButton = (UIButton *)[_navigationBarScrollView viewWithTag:index];
         [currentButton setTitleColor:self.selectedLabelColor forState:UIControlStateNormal];
         _selectedIndex = index;
     }
-    [self transitionToViewControllerAtIndex:index-1];
+    [self transitionToViewControllerAtIndex:index];
 }
 
 
@@ -243,7 +252,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     //fmod-》求余数
     if (0==fmod(scrollView.contentOffset.x,scrollView.frame.size.width)){
-        self.selectedIndex =  scrollView.contentOffset.x/scrollView.frame.size.width+1;
+        self.selectedIndex =  scrollView.contentOffset.x/scrollView.frame.size.width;
     }
 }
 
