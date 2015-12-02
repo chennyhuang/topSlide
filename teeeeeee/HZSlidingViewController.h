@@ -1,24 +1,24 @@
 //
-//  NTSlidingViewController.h
-//  NTSlidingViewController
+//  HZSlidingViewController.h
+//  HZSlidingViewController
 //
-//  Created by nonstriater on 14-2-24.
+//  Created by huangzhenyu on 14-2-24.
 //  Copyright (c) 2014年 huangzhenyu. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@class NTSlidingViewController;
+@class HZSlidingViewController;
 
-@protocol NTSlidingDelegete<NSObject>
+@protocol HZSlidingDelegete<NSObject>
 @optional
 //跳转到目标控制器的代理方法，index从0开始
-- (void)slidingCurrentIndex:(NTSlidingViewController *)sliding currentIndex:(NSUInteger)index;
+- (void)slidingCurrentIndex:(HZSlidingViewController *)sliding currentIndex:(NSUInteger)index;
 @end
 
-@interface NTSlidingViewController : UIViewController
+@interface HZSlidingViewController : UIViewController
 
-@property (nonatomic, weak) id<NTSlidingDelegete>delegate;
+@property (nonatomic, weak) id<HZSlidingDelegete>delegate;
 @property(nonatomic,assign) NSUInteger selectedIndex;
 
 @property(nonatomic,strong) UIColor *selectedLabelColor;
@@ -29,7 +29,7 @@
 @property(nonatomic,strong) NSMutableArray *childControllers;//array of UIViewControllers
 
 - (instancetype)initSlidingViewControllerWithTitle:(NSString *)title viewController:(UIViewController *)controller;
-//- (instancetype)initSlidingViewControllerWithTitlesAndControllers:(NSDictionary *)titlesAndControllers;
+- (instancetype)initSlidingViewControllerWithTitlesAndControllers:(NSDictionary *)titlesAndControllers;
 - (void)addControllerWithTitle:(NSString *)title viewController:(UIViewController *)controller;
 
 - (void)transitionToIndex:(NSUInteger)index;//代码控制跳转到哪个控制器，index从1开始

@@ -1,26 +1,29 @@
 //
-//  NTSlidingViewController.m
-//  NTSlidingViewController
+//  HZSlidingViewController.m
+//  HZSlidingViewController
 //
-//  Created by nonstriater on 14-2-24.
+//  Created by huangzhenyu on 14-2-24.
 //  Copyright (c) 2014年 huangzhenyu. All rights reserved.
 
-#import "NTSlidingViewController.h"
+#import "HZSlidingViewController.h"
 #define kNavigationBarViewH 44 //顶部高度
 #define kButtonMinW 70         //顶部按钮最小宽度
 #define kShadowLineW 50        //线条宽度
 #define kSelecetedColor ([UIColor colorWithRed:70.0/255.0 green:128.0/255.0 blue:209.0/255.0 alpha:1])
-@interface NTSlidingViewController ()<UIScrollViewDelegate>
+@interface HZSlidingViewController ()<UIScrollViewDelegate>
 {
     CGFloat _viewWidth;
+    CGFloat _viewHeight;
     CGFloat _buttonWidth;//顶部按钮实际宽度
+    CGFloat _sysNavBarH; //系统导航条高度
+    CGFloat _sysStatusBarH; //系统状态条高度
 }
 @property (nonatomic,strong) UIView *shadowLine;
 @property (nonatomic,strong) UIScrollView *contentScrollview;
 @property (nonatomic,assign) CGFloat allButtonWidth;
 @end
 
-@implementation NTSlidingViewController
+@implementation HZSlidingViewController
 
 #pragma mark- contrller lifecircle
 - (instancetype)initSlidingViewControllerWithTitle:(NSString *)title viewController:(UIViewController *)controller{
@@ -33,31 +36,27 @@
     }
     return  self;
 }
-//- (instancetype)initSlidingViewControllerWithTitlesAndControllers:(NSDictionary *)titlesAndControllers{
-//    
-//    if (self = [self init]) {
-//        
-//        [titlesAndControllers enumerateKeysAndObjectsUsingBlock:^(id key,id obj,BOOL *stop){
-//            if ([key isKindOfClass:[NSString class]] && [obj isKindOfClass:[UIViewController class]]) {
-//                
-//                [self.titles addObject:key];
-//                [self.childControllers addObject:obj];
-//            }
-//        }];
-//        
-//    }
-//    return self;
-//}
+
+- (instancetype)initSlidingViewControllerWithTitlesAndControllers:(NSDictionary *)titlesAndControllers{
+    
+    if (self = [self init]) {
+        
+        [titlesAndControllers enumerateKeysAndObjectsUsingBlock:^(id key,id obj,BOOL *stop){
+            if ([key isKindOfClass:[NSString class]] && [obj isKindOfClass:[UIViewController class]]) {
+                
+                [self.titles addObject:key];
+                [self.childControllers addObject:obj];
+            }
+        }];
+        
+    }
+    return self;
+}
 
 - (void)addControllerWithTitle:(NSString *)title viewController:(UIViewController *)controller{
     [self.titles addObject:title];
     [self.childControllers addObject:controller];
 }
-
-//#pragma mark - config
-//-(UIInterfaceOrientation)interfaceOrientation{
-//    return UIInterfaceOrientationPortrait;
-//}
 
 - (NSMutableArray *)titles
 {
@@ -79,7 +78,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if ([UIApplication sharedApplication].statusBarHidden) {
+        _sysStatusBarH = 0;
+    } else {
+        _sysStatusBarH = 20;
+    }
+    if (self.navigationController.navigationBar) {
+        _sysNavBarH = self.navigationController.navigationBar.frame.size.height;
+    } else {
+        _sysNavBarH = 0;
+    }
     _viewWidth = self.view.frame.size.width;
+    _viewHeight = self.view.frame.size.height;
     _unselectedLabelColor = [UIColor grayColor];
     _selectedLabelColor = kSelecetedColor;
     self.automaticallyAdjustsScrollViewInsets = NO;//设置scrollview内部的控件不自动下拉64像素
@@ -88,9 +98,28 @@
     self.selectedIndex = 0;
 }
 
+//- (void)viewDidLayoutSubviews{
+//    [super viewDidLayoutSubviews];
+//    _viewWidth = self.view.frame.size.width;
+//    _viewHeight = self.view.frame.size.height;
+//    if ([UIApplication sharedApplication].statusBarHidden) {
+//        _sysStatusBarH = 0;
+//    } else {
+//        _sysStatusBarH = 20;
+//    }
+//    if (self.navigationController.navigationBar) {
+//        _sysNavBarH = self.navigationController.navigationBar.frame.size.height;
+//    } else {
+//        _sysNavBarH = 0;
+//    }
+//    _navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, _sysNavBarH + _sysStatusBarH, _viewWidth, kNavigationBarViewH)];
+//    _navigationBarScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth , kNavigationBarViewH)];
+//    _contentScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _sysNavBarH+_sysStatusBarH+kNavigationBarViewH,_viewWidth  , _viewHeight-_sysNavBarH-_sysStatusBarH-kNavigationBarViewH )];
+//}
+
 -(UIView *)navigationBarView{
     if (!_navigationBarView) {
-        _navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, _viewWidth, kNavigationBarViewH)];
+        _navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, _sysNavBarH + _sysStatusBarH, _viewWidth, kNavigationBarViewH)];
         _navigationBarView.backgroundColor = [UIColor whiteColor];
         [_navigationBarView addSubview:self.navigationBarScrollView];
     }
@@ -138,7 +167,7 @@
 - (UIScrollView *)contentScrollview
 {
     if (!_contentScrollview) {
-        _contentScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64+kNavigationBarViewH,self.view.frame.size.width  , self.view.frame.size.height-64-kNavigationBarViewH )];
+        _contentScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _sysNavBarH+_sysStatusBarH+kNavigationBarViewH,_viewWidth  , _viewHeight-_sysNavBarH-_sysStatusBarH-kNavigationBarViewH )];
         _contentScrollview.backgroundColor = [UIColor whiteColor];
         _contentScrollview.pagingEnabled = YES;
         _contentScrollview.alwaysBounceHorizontal = YES;
@@ -220,7 +249,7 @@
     //设置contentScrollview的偏移量
     [_contentScrollview setContentOffset:CGPointMake(index *_contentScrollview.frame.size.width, 0) animated:YES];
     
-    //设置 navigationBarScrollView 偏移量
+    //设置顶部 navigationBarScrollView 偏移量
     id obj = self.navigationBarScrollView.subviews[index];
     UIButton *selectButton;
     if ([obj isKindOfClass:[UIButton class]]) {

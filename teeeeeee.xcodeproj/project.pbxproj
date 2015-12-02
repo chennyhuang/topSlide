@@ -15,7 +15,7 @@
 		EE9EA52E1ACCCC9400B776FF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE9EA52D1ACCCC9400B776FF /* Images.xcassets */; };
 		EE9EA5311ACCCC9400B776FF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EE9EA52F1ACCCC9400B776FF /* LaunchScreen.xib */; };
 		EE9EA53D1ACCCC9500B776FF /* teeeeeeeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9EA53C1ACCCC9500B776FF /* teeeeeeeTests.m */; };
-		EE9EA5481ACCECCE00B776FF /* NTSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9EA5471ACCECCE00B776FF /* NTSlidingViewController.m */; };
+		EE9EA5481ACCECCE00B776FF /* HZSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9EA5471ACCECCE00B776FF /* HZSlidingViewController.m */; };
 		EE9EA54B1ACCED0C00B776FF /* rootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9EA54A1ACCED0C00B776FF /* rootViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -45,8 +45,8 @@
 		EE9EA5361ACCCC9500B776FF /* teeeeeeeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = teeeeeeeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE9EA53B1ACCCC9500B776FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE9EA53C1ACCCC9500B776FF /* teeeeeeeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = teeeeeeeTests.m; sourceTree = "<group>"; };
-		EE9EA5461ACCECCE00B776FF /* NTSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTSlidingViewController.h; sourceTree = "<group>"; };
-		EE9EA5471ACCECCE00B776FF /* NTSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTSlidingViewController.m; sourceTree = "<group>"; };
+		EE9EA5461ACCECCE00B776FF /* HZSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZSlidingViewController.h; sourceTree = "<group>"; };
+		EE9EA5471ACCECCE00B776FF /* HZSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZSlidingViewController.m; sourceTree = "<group>"; };
 		EE9EA5491ACCED0C00B776FF /* rootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rootViewController.h; sourceTree = "<group>"; };
 		EE9EA54A1ACCED0C00B776FF /* rootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rootViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -102,8 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				EE4A2D281AD7524400384EC3 /* controller */,
-				EE9EA5461ACCECCE00B776FF /* NTSlidingViewController.h */,
-				EE9EA5471ACCECCE00B776FF /* NTSlidingViewController.m */,
+				EE9EA5461ACCECCE00B776FF /* HZSlidingViewController.h */,
+				EE9EA5471ACCECCE00B776FF /* HZSlidingViewController.m */,
 				EE9EA5241ACCCC9400B776FF /* AppDelegate.h */,
 				EE9EA5251ACCCC9400B776FF /* AppDelegate.m */,
 				EE9EA52A1ACCCC9400B776FF /* Main.storyboard */,
@@ -247,7 +247,7 @@
 				EE4A2D2E1AD7719200384EC3 /* SlideViewController.m in Sources */,
 				EE9EA54B1ACCED0C00B776FF /* rootViewController.m in Sources */,
 				EE4A2D2B1AD7525A00384EC3 /* TableViewController.m in Sources */,
-				EE9EA5481ACCECCE00B776FF /* NTSlidingViewController.m in Sources */,
+				EE9EA5481ACCECCE00B776FF /* HZSlidingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

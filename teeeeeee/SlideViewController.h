@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 eamon. All rights reserved.
 //
 
-#import "NTSlidingViewController.h"
+#import "HZSlidingViewController.h"
 
-@interface SlideViewController : NTSlidingViewController
+@interface SlideViewController : HZSlidingViewController
 
 @end

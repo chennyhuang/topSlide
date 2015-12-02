@@ -11,7 +11,7 @@
 #import "TableViewController.h"
 #import "SlideViewController.h"
 
-@interface rootViewController ()<NTSlidingDelegete>
+@interface rootViewController ()<HZSlidingDelegete>
 - (IBAction)click:(id)sender;
 
 @end
@@ -108,7 +108,7 @@
 }
 
 //
-- (void)slidingCurrentIndex:(NTSlidingViewController *)sliding currentIndex:(NSUInteger)index
+- (void)slidingCurrentIndex:(HZSlidingViewController *)sliding currentIndex:(NSUInteger)index
 {
     NSLog(@"slidingCurrentIndex -- %i",index);
 }
