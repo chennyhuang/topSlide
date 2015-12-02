@@ -120,7 +120,6 @@
             [button setContentEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 5)];
             button.tag = i+1;
             [button addTarget:self action:@selector(navigationBarButtonItemClicked:) forControlEvents:UIControlEventTouchUpInside];
-            button.backgroundColor = [UIColor brownColor];
             button.frame = CGRectMake(i*buttonWidth, 0, buttonWidth, kNavigationBarViewH);
             [_navigationBarScrollView addSubview:button];
             if (i==0) {
@@ -132,7 +131,6 @@
         [_navigationBarScrollView addSubview:self.shadowLine];
     }
     _navigationBarScrollView.scrollsToTop = NO;
-    _navigationBarScrollView.backgroundColor = [UIColor yellowColor];
     return _navigationBarScrollView;
 }
 
