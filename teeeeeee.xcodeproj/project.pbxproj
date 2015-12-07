@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EE4A2D2B1AD7525A00384EC3 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE4A2D2A1AD7525A00384EC3 /* TableViewController.m */; };
 		EE4A2D2E1AD7719200384EC3 /* SlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE4A2D2D1AD7719200384EC3 /* SlideViewController.m */; };
+		EE62C7E01C1581960017A713 /* pushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE62C7DF1C1581960017A713 /* pushViewController.m */; };
 		EE9EA5231ACCCC9400B776FF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9EA5221ACCCC9400B776FF /* main.m */; };
 		EE9EA5261ACCCC9400B776FF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9EA5251ACCCC9400B776FF /* AppDelegate.m */; };
 		EE9EA52C1ACCCC9400B776FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE9EA52A1ACCCC9400B776FF /* Main.storyboard */; };
@@ -34,6 +35,8 @@
 		EE4A2D2A1AD7525A00384EC3 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		EE4A2D2C1AD7719200384EC3 /* SlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideViewController.h; sourceTree = "<group>"; };
 		EE4A2D2D1AD7719200384EC3 /* SlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideViewController.m; sourceTree = "<group>"; };
+		EE62C7DE1C1581960017A713 /* pushViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pushViewController.h; sourceTree = "<group>"; };
+		EE62C7DF1C1581960017A713 /* pushViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pushViewController.m; sourceTree = "<group>"; };
 		EE9EA51D1ACCCC9400B776FF /* teeeeeee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = teeeeeee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE9EA5211ACCCC9400B776FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE9EA5221ACCCC9400B776FF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -112,6 +115,8 @@
 				EE9EA5201ACCCC9400B776FF /* Supporting Files */,
 				EE9EA5491ACCED0C00B776FF /* rootViewController.h */,
 				EE9EA54A1ACCED0C00B776FF /* rootViewController.m */,
+				EE62C7DE1C1581960017A713 /* pushViewController.h */,
+				EE62C7DF1C1581960017A713 /* pushViewController.m */,
 			);
 			path = teeeeeee;
 			sourceTree = "<group>";
@@ -247,6 +252,7 @@
 				EE4A2D2E1AD7719200384EC3 /* SlideViewController.m in Sources */,
 				EE9EA54B1ACCED0C00B776FF /* rootViewController.m in Sources */,
 				EE4A2D2B1AD7525A00384EC3 /* TableViewController.m in Sources */,
+				EE62C7E01C1581960017A713 /* pushViewController.m in Sources */,
 				EE9EA5481ACCECCE00B776FF /* HZSlidingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

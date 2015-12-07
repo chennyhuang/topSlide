@@ -6,9 +6,6 @@
 //  Copyright (c) 2014年 huangzhenyu. All rights reserved.
 
 #import "HZSlidingViewController.h"
-
-#define kTopEdge 0 //顶部间隙 （如果需要自定义导航条，这个值应该设置为你自定义导航条的高度 一般是64）
-
 #define kNavigationBarViewH 44 //顶部分类选择条的高度
 #define kButtonMinW 70         //顶部按钮最小宽度
 #define kShadowLineW 50        //指示线条的宽度
@@ -18,8 +15,8 @@
     CGFloat _viewWidth;
     CGFloat _viewHeight;
     CGFloat _buttonWidth;//顶部按钮实际宽度
-    CGFloat _sysNavBarH; //系统导航条高度
-    CGFloat _sysStatusBarH; //系统状态条高度
+//    CGFloat _sysNavBarH; //系统导航条高度
+//    CGFloat _sysStatusBarH; //系统状态条高度
 }
 @property (nonatomic,strong) UIView *shadowLine;
 @property (nonatomic,strong) UIScrollView *contentScrollview;
@@ -61,6 +58,11 @@
     [self.childControllers addObject:controller];
 }
 
+- (void)setTopEdge:(NSUInteger)topEdge{
+    _topEdge = topEdge;
+    [self viewDidLayoutSubviews];//重新计算frame
+}
+
 - (NSMutableArray *)titles
 {
     if (!_titles) {
@@ -81,23 +83,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    if (self.navigationController.navigationBar) {
-        if (self.navigationController.navigationBar.hidden) {//系统导航条存在但是隐藏了
-            _sysNavBarH = 0;
-            _sysStatusBarH = 0;
-        } else {
-            _sysNavBarH = self.navigationController.navigationBar.frame.size.height;
-            if ([UIApplication sharedApplication].statusBarHidden) {
-                _sysStatusBarH = 0;
-            } else {
-                _sysStatusBarH = [UIApplication sharedApplication].statusBarFrame.size.height;
-            }
-        }
-    } else {//系统导航条不存在
-        _sysNavBarH = 0;
-        _sysStatusBarH = 0;
-    }
+    _topEdge = 64;
     _viewWidth = self.view.frame.size.width;
     _viewHeight = self.view.frame.size.height;
     _unselectedLabelColor = [UIColor grayColor];
@@ -113,26 +99,9 @@
     [super viewDidLayoutSubviews];
     _viewWidth = self.view.frame.size.width;
     _viewHeight = self.view.frame.size.height;
-    if (self.navigationController.navigationBar) {
-        if (self.navigationController.navigationBar.hidden) {//系统导航条存在但是隐藏了
-            _sysNavBarH = 0;
-            _sysStatusBarH = 0;
-        } else {
-            _sysNavBarH = self.navigationController.navigationBar.frame.size.height;
-            if ([UIApplication sharedApplication].statusBarHidden) {
-                _sysStatusBarH = 0;
-            } else {
-                _sysStatusBarH = [UIApplication sharedApplication].statusBarFrame.size.height;
-            }
-        }
-    } else {//系统导航条不存在
-        _sysNavBarH = 0;
-        _sysStatusBarH = 0;
-    }
-    NSLog(@"%f --  %f ",_sysNavBarH,_sysStatusBarH);
-    self.navigationBarView.frame = CGRectMake(0, _sysNavBarH + _sysStatusBarH + kTopEdge, _viewWidth, kNavigationBarViewH);
+    self.navigationBarView.frame = CGRectMake(0,  _topEdge, _viewWidth, kNavigationBarViewH);
     self.navigationBarScrollView.frame = CGRectMake(0, 0, _viewWidth , kNavigationBarViewH);
-    self.contentScrollview.frame = CGRectMake(0, _sysNavBarH+_sysStatusBarH+kNavigationBarViewH + kTopEdge,_viewWidth  , _viewHeight-_sysNavBarH-_sysStatusBarH-kNavigationBarViewH - kTopEdge );
+    self.contentScrollview.frame = CGRectMake(0, kNavigationBarViewH + _topEdge,_viewWidth  , _viewHeight-kNavigationBarViewH - _topEdge );
     for (int i=0; i<[self.childControllers count]; i++) {
         id obj = [self.childControllers objectAtIndex:i];
         if ([obj isKindOfClass:[UIViewController class]]) {
@@ -150,7 +119,7 @@
 
 -(UIView *)navigationBarView{
     if (!_navigationBarView) {
-        _navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, _sysNavBarH + _sysStatusBarH + kTopEdge, _viewWidth, kNavigationBarViewH)];
+        _navigationBarView = [[UIView alloc] initWithFrame:CGRectMake(0, _topEdge, _viewWidth, kNavigationBarViewH)];
         _navigationBarView.backgroundColor = [UIColor whiteColor];
         [_navigationBarView addSubview:self.navigationBarScrollView];
     }
@@ -198,7 +167,7 @@
 - (UIScrollView *)contentScrollview
 {
     if (!_contentScrollview) {
-        _contentScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _sysNavBarH+_sysStatusBarH+kNavigationBarViewH + kTopEdge,_viewWidth  , _viewHeight-_sysNavBarH-_sysStatusBarH-kNavigationBarViewH - kTopEdge)];
+        _contentScrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, kNavigationBarViewH + _topEdge,_viewWidth  , _viewHeight-kNavigationBarViewH - _topEdge)];
         _contentScrollview.backgroundColor = [UIColor whiteColor];
         _contentScrollview.pagingEnabled = YES;
         _contentScrollview.alwaysBounceHorizontal = YES;

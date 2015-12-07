@@ -19,8 +19,8 @@
 @interface HZSlidingViewController : UIViewController
 
 @property (nonatomic, weak) id<HZSlidingDelegete>delegate;
+@property (nonatomic,assign) NSUInteger topEdge;//动态设置顶部间距
 @property(nonatomic,assign) NSUInteger selectedIndex;
-
 @property(nonatomic,strong) UIColor *selectedLabelColor;
 @property(nonatomic,strong) UIColor *unselectedLabelColor;
 @property(nonatomic,strong) UIView *navigationBarView;
