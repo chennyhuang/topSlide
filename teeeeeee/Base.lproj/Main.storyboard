@@ -8,7 +8,8 @@
         <!--Navigation Controller-->
         <scene sceneID="B66-Zr-ox5">
             <objects>
-                <navigationController id="ErE-lo-MJc" sceneMemberID="viewController">
+                <navigationController navigationBarHidden="YES" id="ErE-lo-MJc" sceneMemberID="viewController">
+                    <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Sdm-x5-KuN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

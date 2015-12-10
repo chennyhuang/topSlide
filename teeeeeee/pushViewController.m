@@ -74,17 +74,20 @@
     [vc9.view addSubview:label9];
     
     
-    SlideViewController *slideVc = [[SlideViewController alloc] initSlidingViewControllerWithTitle:@"首页" viewController:vc1];
+    SlideViewController *slideVc = [[SlideViewController alloc] initSlidingViewControllerWithTitle:@"专刊" viewController:vc1];
     _slideVc = slideVc;
     slideVc.delegate = self;
-    [slideVc addControllerWithTitle:@"足球" viewController:vc2];
+    [slideVc addControllerWithTitle:@"专刊" viewController:vc2];
     [slideVc addControllerWithTitle:@"轻松一刻" viewController:vc3];
-    [slideVc addControllerWithTitle:@"测试测试" viewController:vc4];
-    [slideVc addControllerWithTitle:@"55" viewController:vc5];
-    [slideVc addControllerWithTitle:@"VC6" viewController:vc6];
-    [slideVc addControllerWithTitle:@"VC7" viewController:vc7];
-    [slideVc addControllerWithTitle:@"VC8" viewController:vc8];
-    [slideVc addControllerWithTitle:@"VC9" viewController:vc9];
+//    [slideVc addControllerWithTitle:@"测试测试" viewController:vc4];
+//    [slideVc addControllerWithTitle:@"55" viewController:vc5];
+//    [slideVc addControllerWithTitle:@"VC6" viewController:vc6];
+//    [slideVc addControllerWithTitle:@"VC7" viewController:vc7];
+//    [slideVc addControllerWithTitle:@"VC8" viewController:vc8];
+//    [slideVc addControllerWithTitle:@"VC9" viewController:vc9];
+    
+    
+    [self addChildViewController:slideVc];
     
     [self.view addSubview:self.slideVc.view];
 

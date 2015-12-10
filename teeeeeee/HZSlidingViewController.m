@@ -83,7 +83,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _topEdge = 64;
+    _topEdge = 0;
     _viewWidth = self.view.frame.size.width;
     _viewHeight = self.view.frame.size.height;
     _unselectedLabelColor = [UIColor grayColor];
