@@ -25,6 +25,14 @@
 
 @implementation HZSlidingViewController
 
+//- (instancetype)initWithFrame:(CGRect)frame{
+//    if (self = [super init]) {
+//        _viewWidth = frame.size.width;
+//        _viewHeight = frame.size.height;
+//    }
+//    return self;
+//}
+
 #pragma mark- contrller lifecircle
 - (instancetype)initSlidingViewControllerWithTitle:(NSString *)title viewController:(UIViewController *)controller{
 
@@ -83,12 +91,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _topEdge = 0;
+    _topEdge = 64;
     _viewWidth = self.view.frame.size.width;
     _viewHeight = self.view.frame.size.height;
+    
+    NSLog(@"%f",_viewWidth);
+    NSLog(@"%f",_viewHeight);
+    
     _unselectedLabelColor = [UIColor grayColor];
     _selectedLabelColor = kSelecetedColor;
-    self.automaticallyAdjustsScrollViewInsets = NO;//设置scrollview内部的控件不自动下拉64像素
+//    self.automaticallyAdjustsScrollViewInsets = NO;//设置scrollview内部的控件不自动下拉64像素
     [self.view addSubview:self.navigationBarView];
     [self.view addSubview:self.contentScrollview];
     self.selectedIndex = 0;
@@ -97,10 +109,35 @@
 - (void)viewDidLayoutSubviews{
     //支持横屏
     [super viewDidLayoutSubviews];
-    _viewWidth = self.view.frame.size.width;
+    _viewWidth = self.view.frame.size.width ;
     _viewHeight = self.view.frame.size.height;
     self.navigationBarView.frame = CGRectMake(0,  _topEdge, _viewWidth, kNavigationBarViewH);
     self.navigationBarScrollView.frame = CGRectMake(0, 0, _viewWidth , kNavigationBarViewH);
+    
+    NSUInteger itemCount = [self.titles count];
+    CGFloat buttonWidth = _viewWidth/itemCount;
+    if (buttonWidth < kButtonMinW) {
+        buttonWidth = kButtonMinW;
+    }
+    _buttonWidth = buttonWidth;
+    self.allButtonWidth = buttonWidth * itemCount;
+    _navigationBarScrollView.showsHorizontalScrollIndicator = NO;
+    _navigationBarScrollView.contentSize = CGSizeMake(self.allButtonWidth, kNavigationBarViewH);
+    NSLog(@"%@",_navigationBarScrollView.subviews);
+    
+    for (id view in _navigationBarScrollView.subviews) {
+        if ([view isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton *)view;
+            button.frame = CGRectMake(button.tag * buttonWidth, 0, buttonWidth, kNavigationBarViewH);
+        }
+    }
+
+    //这段算shadowLine的还有错位BUG
+    CGFloat ratio = _navigationBarScrollView.contentSize.width/_contentScrollview.contentSize.width;
+    CGRect shadowRect = self.shadowLine.frame;
+    shadowRect.origin.x = _navigationBarScrollView.contentOffset.x*ratio + _selectedIndex*buttonWidth + (_buttonWidth - kShadowLineW)*0.5;
+    self.shadowLine.frame = shadowRect;
+
     self.contentScrollview.frame = CGRectMake(0, kNavigationBarViewH + _topEdge,_viewWidth  , _viewHeight-kNavigationBarViewH - _topEdge );
     for (int i=0; i<[self.childControllers count]; i++) {
         id obj = [self.childControllers objectAtIndex:i];
@@ -129,7 +166,9 @@
 - (UIScrollView *)navigationBarScrollView
 {
     if (!_navigationBarScrollView) {
+        
         _navigationBarScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth , kNavigationBarViewH)];
+        
         NSUInteger itemCount = [self.titles count];
         CGFloat buttonWidth = _viewWidth/itemCount;
         if (buttonWidth < kButtonMinW) {
@@ -148,6 +187,7 @@
             [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
             [button setTitle:self.titles[i] forState:UIControlStateNormal];
             [button setContentEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 5)];
+            button.backgroundColor = [UIColor brownColor];
             button.tag = i;
             [button addTarget:self action:@selector(navigationBarButtonItemClicked:) forControlEvents:UIControlEventTouchUpInside];
             button.frame = CGRectMake(i*buttonWidth, 0, buttonWidth, kNavigationBarViewH);
@@ -299,4 +339,5 @@
     shadowRect.origin.x = contentOffsetX*ratio  + (_buttonWidth - kShadowLineW)*0.5;
     self.shadowLine.frame = shadowRect;
 }
+
 @end

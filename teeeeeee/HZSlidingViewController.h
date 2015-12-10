@@ -28,6 +28,8 @@
 @property(nonatomic,strong) NSMutableArray *titles;//array of NSString
 @property(nonatomic,strong) NSMutableArray *childControllers;//array of UIViewControllers
 
+//- (instancetype)initWithFrame:(CGRect)frame;
+
 - (instancetype)initSlidingViewControllerWithTitle:(NSString *)title viewController:(UIViewController *)controller;
 - (instancetype)initSlidingViewControllerWithTitlesAndControllers:(NSDictionary *)titlesAndControllers;
 - (void)addControllerWithTitle:(NSString *)title viewController:(UIViewController *)controller;
